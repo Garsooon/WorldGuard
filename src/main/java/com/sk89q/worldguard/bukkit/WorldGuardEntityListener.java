@@ -23,6 +23,7 @@ import static com.sk89q.worldguard.bukkit.BukkitUtil.toVector;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import com.legacyminecraft.poseidon.event.PlayerDeathEvent;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -45,8 +46,8 @@ import org.bukkit.event.Event;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreeperPowerEvent;
-import org.bukkit.event.entity.EndermanPickupEvent;
-import org.bukkit.event.entity.EndermanPlaceEvent;
+//import org.bukkit.event.entity.EndermanPickupEvent;
+//import org.bukkit.event.entity.EndermanPlaceEvent;
 import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -58,7 +59,7 @@ import org.bukkit.event.entity.EntityListener;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.entity.PigZapEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
+//import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.painting.PaintingBreakByEntityEvent;
 import org.bukkit.event.painting.PaintingBreakEvent;
@@ -157,9 +158,9 @@ public class WorldGuardEntityListener extends EntityListener {
     @Override
     public void onEntityDeath(EntityDeathEvent event) {
         WorldConfiguration wcfg = plugin.getGlobalStateManager().get(event.getEntity().getWorld());
-        if (wcfg.disableExpDrops) {
-            event.setDroppedExp(0);
-        }
+//        if (wcfg.disableExpDrops) {
+//            event.setDroppedExp(0);
+//        }
         if (event instanceof PlayerDeathEvent && wcfg.disableDeathMessages) {
             ((PlayerDeathEvent) event).setDeathMessage("");
         }
@@ -170,7 +171,7 @@ public class WorldGuardEntityListener extends EntityListener {
      * 
      * @param event
      */
-    private void onEntityDamageByBlock(EntityDamageByBlockEvent event) {
+    public void onEntityDamageByBlock(EntityDamageByBlockEvent event) {
         Entity defender = event.getEntity();
         DamageCause type = event.getCause();
 
@@ -224,7 +225,7 @@ public class WorldGuardEntityListener extends EntityListener {
      * 
      * @param event
      */
-    private void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+    public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
         if (event.getCause() == DamageCause.PROJECTILE) {
             onEntityDamageByProjectile(event);
             return;
@@ -796,61 +797,61 @@ public class WorldGuardEntityListener extends EntityListener {
         }
     }
 
-    /**
-     * Called when an enderman picks a block up.
-     */
-    @Override
-    public void onEndermanPickup(EndermanPickupEvent event) {
-        if (event.isCancelled()) {
-            return;
-         }
-
-        Entity ent = event.getEntity();
-        Block block = event.getBlock();
-
-        ConfigurationManager cfg = plugin.getGlobalStateManager();
-        WorldConfiguration wcfg = cfg.get(ent.getWorld());
-
-        if (wcfg.disableEndermanGriefing) {
-            event.setCancelled(true);
-            return;
-        }
-
-        if (wcfg.useRegions) {
-            if (!plugin.getGlobalRegionManager().allows(DefaultFlag.ENDER_BUILD, block.getLocation())) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-    }
-
-    /**
-     * Called when an enderman places a block.
-     */
-    @Override
-    public void onEndermanPlace(EndermanPlaceEvent event) {
-        if (event.isCancelled()) {
-            return;
-         }
-
-        Entity ent = event.getEntity();
-        Location loc = event.getLocation();
-
-        ConfigurationManager cfg = plugin.getGlobalStateManager();
-        WorldConfiguration wcfg = cfg.get(ent.getWorld());
-
-        if (wcfg.disableEndermanGriefing) {
-            event.setCancelled(true);
-            return;
-        }
-
-        if (wcfg.useRegions) {
-            if (!plugin.getGlobalRegionManager().allows(DefaultFlag.ENDER_BUILD, loc)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-    }
+//    /**
+//     * Called when an enderman picks a block up.
+//     */
+//    @Override
+//    public void onEndermanPickup(EndermanPickupEvent event) {
+//        if (event.isCancelled()) {
+//            return;
+//         }
+//
+//        Entity ent = event.getEntity();
+//        Block block = event.getBlock();
+//
+//        ConfigurationManager cfg = plugin.getGlobalStateManager();
+//        WorldConfiguration wcfg = cfg.get(ent.getWorld());
+//
+//        if (wcfg.disableEndermanGriefing) {
+//            event.setCancelled(true);
+//            return;
+//        }
+//
+//        if (wcfg.useRegions) {
+//            if (!plugin.getGlobalRegionManager().allows(DefaultFlag.ENDER_BUILD, block.getLocation())) {
+//                event.setCancelled(true);
+//                return;
+//            }
+//        }
+//    }
+//
+//    /**
+//     * Called when an enderman places a block.
+//     */
+//    @Override
+//    public void onEndermanPlace(EndermanPlaceEvent event) {
+//        if (event.isCancelled()) {
+//            return;
+//         }
+//
+//        Entity ent = event.getEntity();
+//        Location loc = event.getLocation();
+//
+//        ConfigurationManager cfg = plugin.getGlobalStateManager();
+//        WorldConfiguration wcfg = cfg.get(ent.getWorld());
+//
+//        if (wcfg.disableEndermanGriefing) {
+//            event.setCancelled(true);
+//            return;
+//        }
+//
+//        if (wcfg.useRegions) {
+//            if (!plugin.getGlobalRegionManager().allows(DefaultFlag.ENDER_BUILD, loc)) {
+//                event.setCancelled(true);
+//                return;
+//            }
+//        }
+//    }
 
     /**
      * Check if a player is invincible, via either god mode or region flag. If

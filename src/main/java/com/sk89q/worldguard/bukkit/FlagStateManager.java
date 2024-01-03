@@ -19,19 +19,17 @@
 
 package com.sk89q.worldguard.bukkit;
 
-import static com.sk89q.worldguard.bukkit.BukkitUtil.toVector;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import org.bukkit.GameMode;
-import org.bukkit.World;
-import org.bukkit.entity.Player;
-
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
+import org.bukkit.World;
+import org.bukkit.entity.Player;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.sk89q.worldguard.bukkit.BukkitUtil.toVector;
 
 /**
  * This processes per-player state information and is also meant to be used
@@ -87,12 +85,13 @@ public class FlagStateManager implements Runnable {
                     .get(player.getWorld());
             ApplicableRegionSet applicable = regionManager
                     .getApplicableRegions(playerLocation);
-            
+
             if (!RegionQueryUtil.isInvincible(plugin, player, applicable)
                     && !plugin.getGlobalStateManager().hasGodMode(player)
-                    && !(player.getGameMode() == GameMode.CREATIVE)) {
+//                    && !(player.getGameMode() == GameMode.CREATIVE)) {
+            ) {
                 processHeal(applicable, player, state);
-                processFeed(applicable, player, state);
+//                processFeed(applicable, player, state);
             }
         }
     }
@@ -127,7 +126,7 @@ public class FlagStateManager implements Runnable {
         if (player.getHealth() >= maxHealth && healAmount > 0) {
             return;
         }
-        
+
         if (healDelay <= 0) {
             player.setHealth(healAmount > 0 ? maxHealth : minHealth); // this will insta-kill if the flag is unset
             state.lastHeal = now;
@@ -137,43 +136,43 @@ public class FlagStateManager implements Runnable {
             state.lastHeal = now;
         }
     }
-    
-    /**
-     * Process restoring hunger for a player.
-     * 
-     * @param applicable
-     * @param player
-     * @param state
-     */
-    private void processFeed(ApplicableRegionSet applicable, Player player,
-            PlayerFlagState state) {
 
-        Integer feedAmount = applicable.getFlag(DefaultFlag.FEED_AMOUNT);
-        Integer feedDelay = applicable.getFlag(DefaultFlag.FEED_DELAY);
-        Integer minHunger = applicable.getFlag(DefaultFlag.MIN_FOOD);
-        Integer maxHunger = applicable.getFlag(DefaultFlag.MAX_FOOD);
-        
-        if (feedAmount == null || feedDelay == null || feedAmount == 0 || feedDelay < 0) {
-            return;
-        }
-        if (minHunger == null) minHunger = 0;
-        if (maxHunger == null) maxHunger = 20;
-
-        if (player.getFoodLevel() >= maxHunger && feedAmount > 0) {
-            return;
-        }
-
-        if (feedDelay <= 0) {
-            player.setFoodLevel(feedAmount > 0 ? maxHunger : minHunger); // this will insta-kill if the flag is unset
-        } else {
-            // clamp health between minimum and maximum
-            player.setFoodLevel(Math.min(maxHunger, Math.max(minHunger, player.getFoodLevel() + feedAmount)));
-        }
-    }
+//    /**
+//     * Process restoring hunger for a player.
+//     *
+//     * @param applicable
+//     * @param player
+//     * @param state
+//     */
+//    private void processFeed(ApplicableRegionSet applicable, Player player,
+//            PlayerFlagState state) {
+//
+//        Integer feedAmount = applicable.getFlag(DefaultFlag.FEED_AMOUNT);
+//        Integer feedDelay = applicable.getFlag(DefaultFlag.FEED_DELAY);
+//        Integer minHunger = applicable.getFlag(DefaultFlag.MIN_FOOD);
+//        Integer maxHunger = applicable.getFlag(DefaultFlag.MAX_FOOD);
+//
+//        if (feedAmount == null || feedDelay == null || feedAmount == 0 || feedDelay < 0) {
+//            return;
+//        }
+//        if (minHunger == null) minHunger = 0;
+//        if (maxHunger == null) maxHunger = 20;
+//
+//        if (player.getFoodLevel() >= maxHunger && feedAmount > 0) {
+//            return;
+//        }
+//
+//        if (feedDelay <= 0) {
+//            player.setFoodLevel(feedAmount > 0 ? maxHunger : minHunger); // this will insta-kill if the flag is unset
+//        } else {
+//            // clamp health between minimum and maximum
+//            player.setFoodLevel(Math.min(maxHunger, Math.max(minHunger, player.getFoodLevel() + feedAmount)));
+//        }
+//    }
 
     /**
      * Forget a player.
-     * 
+     *
      * @param player
      */
     public synchronized void forget(Player player) {
