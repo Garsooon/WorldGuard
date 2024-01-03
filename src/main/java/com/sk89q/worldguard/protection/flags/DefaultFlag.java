@@ -52,6 +52,7 @@ public final class DefaultFlag {
     public static final StateFlag ICE_MELT = new StateFlag("ice-melt", true);
     public static final StateFlag MUSHROOMS = new StateFlag("mushroom-growth", true);
     public static final StateFlag LEAF_DECAY = new StateFlag("leaf-decay", true);
+    public static final StateFlag SIGN_UPDATE = new StateFlag("sign-update", true); //Re-added from Jilm's fork
     public static final StateFlag ENDER_BUILD = new StateFlag("enderman-grief", true);
     public static final StateFlag INVINCIBILITY = new StateFlag("invincible", false);
     public static final StateFlag ENTRY = new StateFlag("entry", true);
@@ -91,7 +92,7 @@ public final class DefaultFlag {
         SNOW_FALL, SNOW_MELT, ICE_FORM, ICE_MELT, MUSHROOMS, LEAF_DECAY,
         FIRE_SPREAD,  LAVA_FIRE, LAVA_FLOW, WATER_FLOW,
         TELE_LOC, TELE_PERM, SPAWN_LOC, SPAWN_PERM,
-        BLOCKED_CMDS, ALLOWED_CMDS, PRICE, BUYABLE,
+        BLOCKED_CMDS, ALLOWED_CMDS, PRICE, BUYABLE, SIGN_UPDATE
     };
 
     static {
