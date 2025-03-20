@@ -307,10 +307,7 @@ public class GeneralCommands {
                     // Blocks store their color in the damage value
                     if (
                         item2.getTypeId() == item.getTypeId() &&
-                        (
-                            !ItemType.usesDamageValue(item.getTypeId()) ||
-                            item.getDurability() == item2.getDurability()
-                        )
+                        item.getDurability() == item2.getDurability()
                     ) {
                         // This stack won't fit in the parent stack
                         if (item2.getAmount() > needed) {
