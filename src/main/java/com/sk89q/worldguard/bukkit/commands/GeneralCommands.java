@@ -33,27 +33,30 @@ import com.sk89q.worldguard.bukkit.ConfigurationManager;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
 public class GeneralCommands {
-    
-    @Command(aliases = {"god"},
-            usage = "[player]",
-            desc = "Enable godmode on a player",
-            flags = "s", min = 0, max = 1)
-    public static void god(CommandContext args, WorldGuardPlugin plugin,
-            CommandSender sender) throws CommandException {
+
+    @Command(
+        aliases = { "god" },
+        usage = "[player]",
+        desc = "Enable godmode on a player",
+        flags = "s",
+        min = 0,
+        max = 1
+    )
+    public static void god(CommandContext args, WorldGuardPlugin plugin, CommandSender sender) throws CommandException {
         ConfigurationManager config = plugin.getGlobalStateManager();
-        
+
         Iterable<Player> targets = null;
         boolean included = false;
-        
+
         // Detect arguments based on the number of arguments provided
         if (args.argsLength() == 0) {
             targets = plugin.matchPlayers(plugin.checkPlayer(sender));
-            
+
             // Check permissions!
             plugin.checkPermission(sender, "worldguard.god");
-        } else if (args.argsLength() == 1) {            
+        } else if (args.argsLength() == 1) {
             targets = plugin.matchPlayers(sender, args.getString(0));
-            
+
             // Check permissions!
             plugin.checkPermission(sender, "worldguard.god.other");
         }
@@ -61,210 +64,224 @@ public class GeneralCommands {
         for (Player player : targets) {
             config.enableGodMode(player);
             player.setFireTicks(0);
-            
+
             // Tell the user
             if (player.equals(sender)) {
                 player.sendMessage(ChatColor.YELLOW + "God mode enabled! Use /ungod to disable.");
-                
+
                 // Keep track of this
                 included = true;
             } else {
                 player.sendMessage(ChatColor.YELLOW + "God enabled by "
                         + plugin.toName(sender) + ".");
-                
+
             }
         }
-        
+
         // The player didn't receive any items, then we need to send the
         // user a message so s/he know that something is indeed working
         if (!included && args.hasFlag('s')) {
             sender.sendMessage(ChatColor.YELLOW.toString() + "Players now have god mode.");
         }
     }
-    
-    @Command(aliases = {"ungod"},
-            usage = "[player]",
-            desc = "Disable godmode on a player",
-            flags = "s", min = 0, max = 1)
-    public static void ungod(CommandContext args, WorldGuardPlugin plugin,
-            CommandSender sender) throws CommandException {
+
+    @Command(
+        aliases = { "ungod" },
+        usage = "[player]",
+        desc = "Disable godmode on a player",
+        flags = "s",
+        min = 0,
+        max = 1
+    )
+    public static void ungod(CommandContext args, WorldGuardPlugin plugin, CommandSender sender) throws CommandException {
         ConfigurationManager config = plugin.getGlobalStateManager();
-        
+
         Iterable<Player> targets = null;
         boolean included = false;
-        
+
         // Detect arguments based on the number of arguments provided
         if (args.argsLength() == 0) {
             targets = plugin.matchPlayers(plugin.checkPlayer(sender));
-            
+
             // Check permissions!
             plugin.checkPermission(sender, "worldguard.god");
-        } else if (args.argsLength() == 1) {            
+        } else if (args.argsLength() == 1) {
             targets = plugin.matchPlayers(sender, args.getString(0));
-            
+
             // Check permissions!
             plugin.checkPermission(sender, "worldguard.god.other");
         }
 
         for (Player player : targets) {
             config.disableGodMode(player);
-            
+
             // Tell the user
             if (player.equals(sender)) {
                 player.sendMessage(ChatColor.YELLOW + "God mode disabled!");
-                
+
                 // Keep track of this
                 included = true;
             } else {
                 player.sendMessage(ChatColor.YELLOW + "God disabled by "
                         + plugin.toName(sender) + ".");
-                
+
             }
         }
-        
+
         // The player didn't receive any items, then we need to send the
         // user a message so s/he know that something is indeed working
         if (!included && args.hasFlag('s')) {
             sender.sendMessage(ChatColor.YELLOW.toString() + "Players no longer have god mode.");
         }
     }
-    
-    @Command(aliases = {"heal"},
-            usage = "[player]",
-            desc = "Heal a player",
-            flags = "s", min = 0, max = 1)
-    public static void heal(CommandContext args, WorldGuardPlugin plugin,
-            CommandSender sender) throws CommandException {
-        
+
+    @Command(
+        aliases = { "heal" },
+        usage = "[player]",
+        desc = "Heal a player",
+        flags = "s",
+        min = 0,
+        max = 1
+    )
+    public static void heal(CommandContext args, WorldGuardPlugin plugin, CommandSender sender) throws CommandException {
         Iterable<Player> targets = null;
         boolean included = false;
-        
+
         // Detect arguments based on the number of arguments provided
         if (args.argsLength() == 0) {
             targets = plugin.matchPlayers(plugin.checkPlayer(sender));
-            
+
             // Check permissions!
             plugin.checkPermission(sender, "worldguard.heal");
-        } else if (args.argsLength() == 1) {            
+        } else if (args.argsLength() == 1) {
             targets = plugin.matchPlayers(sender, args.getString(0));
-            
+
             // Check permissions!
             plugin.checkPermission(sender, "worldguard.heal.other");
         }
 
         for (Player player : targets) {
             player.setHealth(20);
-            
+
             // Tell the user
             if (player.equals(sender)) {
                 player.sendMessage(ChatColor.YELLOW + "Healed!");
-                
+
                 // Keep track of this
                 included = true;
             } else {
                 player.sendMessage(ChatColor.YELLOW + "Healed by "
                         + plugin.toName(sender) + ".");
-                
+
             }
         }
-        
+
         // The player didn't receive any items, then we need to send the
         // user a message so s/he know that something is indeed working
         if (!included && args.hasFlag('s')) {
             sender.sendMessage(ChatColor.YELLOW.toString() + "Players healed.");
         }
     }
-    
-    @Command(aliases = {"slay"},
-            usage = "[player]",
-            desc = "Slay a player",
-            flags = "s", min = 0, max = 1)
-    public static void slay(CommandContext args, WorldGuardPlugin plugin,
-            CommandSender sender) throws CommandException {
-        
+
+    @Command(
+        aliases = { "slay" },
+        usage = "[player]",
+        desc = "Slay a player",
+        flags = "s",
+        min = 0,
+        max = 1
+    )
+    public static void slay(CommandContext args, WorldGuardPlugin plugin, CommandSender sender) throws CommandException {
+
         Iterable<Player> targets = null;
         boolean included = false;
-        
+
         // Detect arguments based on the number of arguments provided
         if (args.argsLength() == 0) {
             targets = plugin.matchPlayers(plugin.checkPlayer(sender));
-            
+
             // Check permissions!
             plugin.checkPermission(sender, "worldguard.slay");
-        } else if (args.argsLength() == 1) {            
+        } else if (args.argsLength() == 1) {
             targets = plugin.matchPlayers(sender, args.getString(0));
-            
+
             // Check permissions!
             plugin.checkPermission(sender, "worldguard.slay.other");
         }
 
         for (Player player : targets) {
             player.setHealth(0);
-            
+
             // Tell the user
             if (player.equals(sender)) {
                 player.sendMessage(ChatColor.YELLOW + "Slain!");
-                
+
                 // Keep track of this
                 included = true;
             } else {
                 player.sendMessage(ChatColor.YELLOW + "Slain by "
                         + plugin.toName(sender) + ".");
-                
+
             }
         }
-        
+
         // The player didn't receive any items, then we need to send the
         // user a message so s/he know that something is indeed working
         if (!included && args.hasFlag('s')) {
             sender.sendMessage(ChatColor.YELLOW.toString() + "Players slain.");
         }
     }
-    
-    @Command(aliases = {"locate"},
-            usage = "[player]",
-            desc = "Locate a player",
-            flags = "", min = 0, max = 1)
-    @CommandPermissions({"worldguard.locate"})
-    public static void locate(CommandContext args, WorldGuardPlugin plugin,
-            CommandSender sender) throws CommandException {
-        
+
+    @Command(aliases = { "locate" },
+        usage = "[player]",
+        desc = "Locate a player",
+        flags = "",
+        min = 0,
+        max = 1
+    )
+    @CommandPermissions({ "worldguard.locate" })
+    public static void locate(CommandContext args, WorldGuardPlugin plugin, CommandSender sender) throws CommandException {
         Player player = plugin.checkPlayer(sender);
-        
+
         if (args.argsLength() == 0) {
             player.setCompassTarget(player.getWorld().getSpawnLocation());
-            
+
             sender.sendMessage(ChatColor.YELLOW.toString() + "Compass reset to spawn.");
         } else {
             Player target = plugin.matchSinglePlayer(sender, args.getString(0));
             player.setCompassTarget(target.getLocation());
-            
+
             sender.sendMessage(ChatColor.YELLOW.toString() + "Compass repointed.");
         }
     }
-    
-    @Command(aliases = {"stack"},
-            usage = "",
-            desc = "Stack items",
-            flags = "", min = 0, max = 0)
-    @CommandPermissions({"worldguard.stack"})
-    public static void stack(CommandContext args, WorldGuardPlugin plugin,
-            CommandSender sender) throws CommandException {
-        
+
+    @Command(
+        aliases = { "stack" },
+        usage = "",
+        desc = "Stack items",
+        flags = "",
+        min = 0,
+        max = 0
+    )
+    @CommandPermissions({ "worldguard.stack" })
+    public static void stack(CommandContext args, WorldGuardPlugin plugin, CommandSender sender) throws CommandException {
         Player player = plugin.checkPlayer(sender);
         boolean ignoreMax = plugin.hasPermission(player, "worldguard.stack.illegitimate");
-        
+
         ItemStack[] items = player.getInventory().getContents();
         int len = items.length;
 
         int affected = 0;
-        
+
         for (int i = 0; i < len; i++) {
             ItemStack item = items[i];
 
             // Avoid infinite stacks and stacks with durability
-            if (item == null || item.getAmount() <= 0
-                    || (!ignoreMax && item.getMaxStackSize() == 1)) {
+            if (
+                item == null ||
+                item.getAmount() <= 0 ||
+                (!ignoreMax && item.getMaxStackSize() == 1)
+            ) {
                 continue;
             }
 
@@ -278,22 +295,26 @@ public class GeneralCommands {
                     ItemStack item2 = items[j];
 
                     // Avoid infinite stacks and stacks with durability
-                    if (item2 == null || item2.getAmount() <= 0
-                            || (!ignoreMax && item.getMaxStackSize() == 1)) {
+                    if (
+                        item2 == null ||
+                        item2.getAmount() <= 0 ||
+                        (!ignoreMax && item.getMaxStackSize() == 1)
+                    ) {
                         continue;
                     }
 
                     // Same type?
                     // Blocks store their color in the damage value
-                    if (item2.getTypeId() == item.getTypeId() &&
-                            (!ItemType.usesDamageValue(item.getTypeId())
-                                    || item.getDurability() == item2.getDurability())) {
+                    if (
+                        item2.getTypeId() == item.getTypeId() &&
+                        item.getDurability() == item2.getDurability()
+                    ) {
                         // This stack won't fit in the parent stack
                         if (item2.getAmount() > needed) {
                             item.setAmount(64);
                             item2.setAmount(item2.getAmount() - needed);
                             break;
-                        // This stack will
+                            // This stack will
                         } else {
                             items[j] = null;
                             item.setAmount(item.getAmount() + item2.getAmount());
