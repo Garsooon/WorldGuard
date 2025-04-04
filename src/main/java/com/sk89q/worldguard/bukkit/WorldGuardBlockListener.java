@@ -224,7 +224,7 @@ public class WorldGuardBlockListener extends BlockListener {
             return;
         }
 
-        if (wcfg.simulateSponge && isWater || isLava) {
+        if (wcfg.simulateSponge && (isWater || isLava)) {
             int ox = blockTo.getX();
             int oy = blockTo.getY();
             int oz = blockTo.getZ();
@@ -569,12 +569,13 @@ public class WorldGuardBlockListener extends BlockListener {
                 for (int cy = -1; cy <= 1; cy++) {
                     for (int cz = -1; cz <= 1; cz++) {
                         Block sponge = world.getBlockAt(ox + cx, oy + cy, oz + cz);
-                        if (sponge.getTypeId() == 19
-                                && sponge.isBlockIndirectlyPowered()) {
+                        if (sponge.getTypeId() != 19)
+                            continue;
+
+                        if (sponge.isBlockIndirectlyPowered()) {
                             SpongeUtil.clearSpongeWater(plugin, world, ox + cx, oy + cy, oz + cz);
                             SpongeUtilLava.clearSpongeLava(plugin, world, ox + cx, oy + cy, oz + cz);
-                        } else if (sponge.getTypeId() == 19
-                                && !sponge.isBlockIndirectlyPowered()) {
+                        } else {
                             SpongeUtil.addSpongeWater(plugin, world, ox + cx, oy + cy, oz + cz);
                             SpongeUtilLava.addSpongeLava(plugin, world, ox + cx, oy + cy, oz + cz);
                         }
